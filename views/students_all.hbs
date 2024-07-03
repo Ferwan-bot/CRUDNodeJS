@@ -1,0 +1,96 @@
+<div class="container p-3">
+    <div class="row">
+        <div class="col-md-12 mx-auto my-auto">
+            <h2 class="pb-3">ESTUDIANTES</h2>
+            <form method="POST" action="/students/new" id="FormCollege">
+                <div class="row">
+                    <div class="col-md-6 mx-auto my-auto">
+                        <div class="mb-3">
+                            <label for="Name" class="form-label">Nombre</label>
+                            <input type="text" class="form-control" name="Name" maxlength="50" id="Name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="Gender" class="form-label">Género</label>
+                            <select type="text" class="form-control" name="Gender" id="Gender" required>
+                                <option value="">Selecciona uno</option>
+                                <option value="0">Mujer</option>
+                                <option value="1">Hombre</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mx-auto my-auto">
+                        <div class="mb-3">
+                            <label for="Surname" class="form-label">Apellidos</label>
+                            <input type="text" class="form-control" name="Surname" maxlength="50" id="Surname" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="DoB" class="form-label">Fecha de nacimiento</label>
+                            <input type="date" class="form-control" name="DoB" id="DoB" required>
+                            <input type="number" class="form-control" name="Id" id="Id" hidden value="">
+                        </div>
+                    </div>
+
+                </div><button type="submit" class="btn btn-primary">Enviar</button>
+            </form>
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 mx-auto my-auto pt-5">
+            {{#if students}}
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col align-middle">#</th>
+                        <th scope="col align-middle">Nombre</th>
+                        <th scope="col align-middle">Apellido</th>
+                        <th scope="col align-middle">Género</th>
+                        <th scope="col align-middle">DoB</th>
+                        <th class="align-middle"></th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    {{#each students}}
+                    <tr>
+                        <td scope="row" class="align-middle">{{Id}}</td>
+                        <td class="align-middle">{{Name}}</td>
+                        <td class="align-middle">{{Surname}}</td>
+                        <td class="align-middle">{{#if Gender}}Hombre{{else}}Mujer{{/if}}</td>
+                        <td class="align-middle">{{DoB}}</td>
+                        <td class="align-middle">
+                            <button class="btn btn-danger" type='button' onclick="DeleteStudent({{Id}})"><i
+                                    class="bi bi-person-dash"></i></button>
+                            <button class="btn btn-secondary" type='button'
+                                onclick="EditStudent({{Id}},'{{Name}}','{{Surname}}','{{Gender}}','{{DoB}}')"><i
+                                    class="bi bi-pencil-square"></i></button>
+                        </td>
+                    </tr>
+                    {{/each}}
+
+
+                </tbody>
+            </table>
+            {{else}}
+            No hay registros aún
+            {{/if}}
+        </div>
+    </div>
+</div>
+
+<script>
+    function EditStudent(Id, Name, Surname, Gender, DoB) {
+        document.getElementById('Name').value = Name;
+        document.getElementById('Surname').value = Surname;
+        document.getElementById('Gender').value = Gender;
+        document.getElementById('DoB').value = DoB;
+        document.getElementById('Id').value = Id;
+    }
+
+    function DeleteStudent(Id) {
+        const form = document.getElementById('FormCollege')
+        form.action = `/students/delete/${Id}`
+        form.method = 'GET'
+        form.submit();
+    }
+</script>

@@ -1,0 +1,83 @@
+<div class="container p-3">
+    <div class="row">
+        <div class="col-md-12 mx-auto my-auto">
+<h2 class="pb-3">GRADOS</h2>
+            <form method="POST" action="/grades/new" id="FormCollege">
+                <div class="row">
+                    <div class="col-md-6 mx-auto my-auto">
+                        <div class="mb-3">
+                            <label for="Name" class="form-label">Nombre</label>
+                            <input type="text" class="form-control" name="Name" maxlength="50" id="Name" required>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mx-auto my-auto">
+                        <div class="mb-3">
+                            <label for="Professor_Id" class="form-label">Profesor</label>
+                            <select type="text" class="form-control" name="Professor_Id" id="Professor_Id" required>
+                                <option value="">Selecciona uno</option>
+                                {{#each professors}}
+                                <option value="{{Professor_Id}}">{{ProfessorName}}</option>
+                                {{/each}}
+                            </select>
+                            <input type="number" class="form-control" name="Id" id="Id" hidden value="">
+                        </div>
+                    </div>
+
+                </div><button type="submit" class="btn btn-primary">Enviar</button>
+            </form>
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 mx-auto my-auto pt-5">
+            {{#if grades}}
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col align-middle">#</th>
+                        <th scope="col align-middle">Nombre</th>
+                        <th scope="col align-middle">Nombre del Profesor</th>
+                        <th class="align-middle"></th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    {{#each grades}}
+                    <tr>
+                        <td scope="row" class="align-middle">{{Id}}</td>
+                        <td class="align-middle">{{Name}}</td>
+                        <td class="align-middle">{{ProfessorName}}</td>
+                        <td class="align-middle">
+                            <button class="btn btn-danger" type='button' onclick="DeleteGrade({{Id}})"><i
+                                    class="bi bi-person-dash"></i></button>
+                            <button class="btn btn-secondary" type='button'
+                                onclick="EditGrade({{Id}}, '{{Name}}','{{Professor_Id}}')"><i
+                                    class="bi bi-pencil-square"></i></button>
+                        </td>
+                    </tr>
+                    {{/each}}
+
+
+                </tbody>
+            </table>
+            {{else}}
+            No hay registros aún
+            {{/if}}
+        </div>
+    </div>
+</div>
+
+<script>
+    function EditGrade(Id, Name, Professor_Id) {
+        document.getElementById('Name').value = Name;
+        document.getElementById('Professor_Id').value = Professor_Id;
+        document.getElementById('Id').value = Id;
+    }
+
+    function DeleteGrade(Id) {
+        const form = document.getElementById('FormCollege')
+        form.action = `/grades/delete/${Id}`
+        form.method = 'GET'
+        form.submit();
+    }
+</script>

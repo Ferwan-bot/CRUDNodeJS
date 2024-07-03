@@ -1,0 +1,95 @@
+<div class="container p-3">
+    <div class="row">
+        <div class="col-md-12 mx-auto my-auto">
+            <h2 class="pb-3">ASIGNAR GRADO</h2>
+            <form method="POST" action="/assign/new" id="FormCollege">
+                <div class="row">
+                    <div class="col-md-6 mx-auto my-auto">
+                        <div class="mb-3">
+                            <label for="Student_Id" class="form-label">Estudiante</label>
+                            <select type="text" class="form-control" name="Student_Id" id="Student_Id" required>
+                                <option value="">Selecciona uno</option>
+                                {{#each students}}
+                                <option value="{{Student_Id}}">{{StudentName}}</option>
+                                {{/each}}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mx-auto my-auto">
+                        <div class="mb-3">
+                            <label for="Grade_Id" class="form-label">Grado</label>
+                            <select type="text" class="form-control" name="Grade_Id" id="Grade_Id" required>
+                                <option value="">Selecciona uno</option>
+                                {{#each grades}}
+                                <option value="{{Id}}">{{Name}} - Profesor {{ProfessorName}}</option>
+                                {{/each}}
+                            </select>
+                            <input type="number" class="form-control" name="Id" id="Id" hidden value="">
+                        </div>
+                        <div class="mb-3">
+                            <label for="Name" class="form-label">Sección (Grupo)</label>
+                            <input type="number" class="form-control" name="Section" id="Section" required>
+                        </div>
+                    </div>
+
+                </div><button type="submit" class="btn btn-primary">Enviar</button>
+            </form>
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 mx-auto my-auto pt-5">
+            {{#if all}}
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col align-middle">#</th>
+                        <th scope="col align-middle">Nombre del estudiante</th>
+                        <th scope="col align-middle">Grado y Profesor</th>
+                        <th scope="col align-middle">Sección (Grupo)</th>
+                        <th class="align-middle"></th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    {{#each all}}
+                    <tr>
+                        <td scope="row" class="align-middle">{{Id}}</td>
+                        <td class="align-middle">{{StudentName}}</td>
+                        <td class="align-middle">{{GradeName}} - Profesor {{ProfessorName}}</td>
+                        <td class="align-middle">{{Section}}</td>
+                        <td class="align-middle">
+                            <button class="btn btn-danger" type='button' onclick="DeleteGrade({{Id}})"><i
+                                    class="bi bi-person-dash"></i></button>
+                            <button class="btn btn-secondary" type='button'
+                                onclick="EditGrade({{Id}}, '{{Student_Id}}','{{Grade_Id}}','{{Section}}')"><i
+                                    class="bi bi-pencil-square"></i></button>
+                        </td>
+                    </tr>
+                    {{/each}}
+
+
+                </tbody>
+            </table>
+            {{else}}
+            No hay registros aún
+            {{/if}}
+        </div>
+    </div>
+</div>
+
+<script>
+    function EditGrade(Id, Student_Id, Grade_Id, Section) {
+        document.getElementById('Student_Id').value = Student_Id;
+        document.getElementById('Grade_Id').value = Grade_Id;
+        document.getElementById('Section').value = Section;
+        document.getElementById('Id').value = Id;
+    }
+
+    function DeleteGrade(Id) {
+        const form = document.getElementById('FormCollege')
+        form.action = `/assign/delete/${Id}`
+        form.method = 'GET'
+        form.submit();
+    }
+</script>
